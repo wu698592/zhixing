@@ -1,0 +1,38 @@
+onStart => {
+	setXYpos 0, -150
+	hide
+	wait 10
+	show
+	say "我是猎人，我来保护小红帽！", 2
+	animate "walk", true
+}
+
+onMsg "restart", => {
+	setXYpos 0, -150
+	hide
+}
+
+forever => {
+	if visible {
+		turnTo "Wolf", 0.3
+		step 2, 1
+		
+		if distanceTo("Wolf") < 60 {
+			broadcast "wolfScared"
+			say "灰太狼，快走开！", 2
+		}
+	}
+	wait 0.1
+}
+
+onMsg "caught", => {
+	if !visible {
+		show
+		setXYpos 0, -100
+		say "我来晚了...", 2
+	}
+}
+
+onClick => {
+	say "别担心，我会保护你们的！", 1
+}
