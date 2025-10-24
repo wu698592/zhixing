@@ -1,0 +1,20 @@
+run "RedRidingHood", {Title: "小红帽与灰太狼"}
+
+var (
+	score int
+	gameOver bool
+)
+
+onStart => {
+	setBackdrop "forest"
+	score = 0
+	gameOver = false
+}
+
+onKey KeySpace, => {
+	if gameOver {
+		score = 0
+		gameOver = false
+		broadcast "restart"
+	}
+}

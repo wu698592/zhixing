@@ -1,0 +1,47 @@
+var (
+	huntingSpeed = 3
+	isHunting = true
+)
+
+onStart => {
+	setXYpos 200, 0
+	show
+	setSize 1.2
+	isHunting = true
+	animate "walk", true
+	say "嘿嘿，小红帽来了！", 2
+}
+
+onMsg "restart", => {
+	setXYpos 200, 0
+	show
+	isHunting = true
+	animate "walk", true
+}
+
+forever => {
+	if isHunting {
+		turnTo "RedRidingHood", 0.5
+		step huntingSpeed, 1
+		
+		if distanceTo("RedRidingHood") < 50 {
+			huntingSpeed = 4
+			say "我要抓住你！", 1
+		}
+	}
+	wait 0.1
+}
+
+onMsg "caught", => {
+	isHunting = false
+	say "哈哈，抓到了！", 3
+	animate "happy", true
+	wait 3
+	gameOver = true
+}
+
+onClick => {
+	if isHunting {
+		say "别打扰我抓小红帽！", 1
+	}
+}

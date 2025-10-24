@@ -1,0 +1,63 @@
+var (
+	speed = 5
+	isCaught bool
+)
+
+onStart => {
+	setXYpos -200, 0
+	show
+	setSize 1
+	isCaught = false
+	animate "walk", true
+}
+
+onMsg "restart", => {
+	setXYpos -200, 0
+	show
+	isCaught = false
+	animate "walk", true
+}
+
+onKey KeyRight, => {
+	if !isCaught {
+		changeXpos speed
+		setHeading Right
+	}
+}
+
+onKey KeyLeft, => {
+	if !isCaught {
+		changeXpos -speed
+		setHeading Left
+	}
+}
+
+onKey KeyUp, => {
+	if !isCaught {
+		changeYpos speed
+	}
+}
+
+onKey KeyDown, => {
+	if !isCaught {
+		changeYpos -speed
+	}
+}
+
+forever => {
+	if !isCaught {
+		if touching("Wolf") {
+			isCaught = true
+			say "啊！灰太狼抓住我了！", 3
+			broadcast "caught"
+			wait 3
+			hide
+		}
+	}
+	wait 0.1
+}
+
+onMsg "safe", => {
+	say "太好了，我安全了！", 2
+	animate "happy", true
+}
